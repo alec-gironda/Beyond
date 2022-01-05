@@ -31,6 +31,7 @@ class GameOverScene: SKScene{
         scoreLabel.text = "Score: \(gameScore)"
         scoreLabel.fontSize = 100
         scoreLabel.position = CGPoint(x: self.size.width/2, y: self.size.height*0.55)
+        scoreLabel.zPosition = 1
         self.addChild(scoreLabel)
         
         let defaults = UserDefaults()

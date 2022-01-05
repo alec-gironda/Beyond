@@ -351,12 +351,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             print("can't find level info")
          
         }
-        
+        let shoot = SKAction.run(fireBullet)
+        let waitShot = SKAction.wait(forDuration: 0.4)
+        let shootSequence = SKAction.sequence([shoot,waitShot])
+        let shootForever = SKAction.repeatForever(shootSequence)
         let spawn = SKAction.run(spawnEnemy)
         let waitToSpawn = SKAction.wait(forDuration: levelDuration)
         let spawnSequence = SKAction.sequence([waitToSpawn,spawn])
         let spawnForever = SKAction.repeatForever(spawnSequence)
         self.run(spawnForever, withKey:"spawningEnemies")
+        self.run(shootForever, withKey:"shooting")
     }
     
     func fireBullet(){
@@ -376,7 +380,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let moveBullet = SKAction.moveTo(y: self.size.height+bullet.size.height, duration: 1)
         let deleteBullet = SKAction.removeFromParent()
         let bulletSequence = SKAction.sequence([bulletSound,moveBullet,deleteBullet])
+        
+        if currentGameState == .inGame{
         bullet.run(bulletSequence)
+        }
     }
     
     func spawnEnemy(){
@@ -427,9 +434,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if currentGameState == .preGame{
             startGame()
         }
-        else if currentGameState == .inGame{
-        fireBullet()
-        }
+//        else if currentGameState == .inGame{
+//        fireBullet()
+//        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
